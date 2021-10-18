@@ -1,5 +1,11 @@
 # dmenukey - dmenu, press key to select
 ====================
+## my-dmenukey vs dmenukey
+*my-dmenukey* is just *dmenukey* but integrated with **gcolors**, it's already patched with
+*dmenukey-lineheight* and it has all the configuration for personal use.
+
+*dmenukey* is just an standart version, *my-dmenukey* is my configuration
+
 ## Usage
 dmenu is an efficient dynamic menu for X. However, for little scripts such as a
 power menu or music menu it would be usefull to do the following (for the power menu script): 
