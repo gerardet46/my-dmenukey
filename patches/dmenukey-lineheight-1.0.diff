@@ -1,0 +1,69 @@
+diff --git a/config.def.h b/config.def.h
+index b31cea2..fe8d2e4 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -18,6 +18,9 @@ static const char *colors[SchemeLast][2] = {
+ };
+ /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
+ static unsigned int lines      = 0;
++/* -h option; minimum height of a menu line */
++static unsigned int lineheight = 0;
++static unsigned int min_lineheight = 8;
+ 
+ /*
+  * Characters not considered part of a word while deleting words
+diff --git a/dmenukey.1 b/dmenukey.1
+index f8a5a98..c92ec7c 100644
+--- a/dmenukey.1
++++ b/dmenukey.1
+@@ -6,6 +6,8 @@ dmenu \- dmenu, key to select
+ .RB [ \-bfv ]
+ .RB [ \-l
+ .IR lines ]
++.RB [ \-h
++.IR height ]
+ .RB [ \-H
+ .IR hint_0/1 ]
+ .RB [ \-c
+@@ -45,6 +47,9 @@ is faster, but will lock up X until stdin reaches end\-of\-file.
+ .BI \-l " lines"
+ dmenukey lists items vertically, with the given number of lines.
+ .TP
++.BI \-h " height"
++dmenu uses a menu line of at least 'height' pixels tall, but no less than 8.
++.TP
+ .BI \-H " hint"
+ set to 1/0 to enable/disable the hint respectively
+ .TP
+diff --git a/dmenukey.c b/dmenukey.c
+index 3861ec8..64efb8b 100644
+--- a/dmenukey.c
++++ b/dmenukey.c
+@@ -398,6 +398,7 @@ setup(void)
+ 
+ 	/* calculate menu geometry */
+ 	bh = drw->fonts->h + 2;
++	bh = MAX(bh,lineheight);	/* make a menu line AT LEAST 'lineheight' tall */
+ 	lines = MAX(lines, 0);
+ 	mh = (lines + 1) * bh;
+ #ifdef XINERAMA
+@@ -478,7 +479,7 @@ setup(void)
+ static void
+ usage(void)
+ {
+-	fputs("usage: dmenu [-bfv] [-l lines] [-p prompt] [-H hint(0/1)] [-fn font] [-m monitor]\n"
++	fputs("usage: dmenu [-bfv] [-l lines] [-p prompt] [-h height] [-H hint(0/1)] [-fn font] [-m monitor]\n"
+ 	      "             [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]\n", stderr);
+ 	exit(1);
+ }
+@@ -519,6 +520,10 @@ main(int argc, char *argv[])
+ 			colors[SchemeSel][ColFg] = argv[++i];
+ 		else if (!strcmp(argv[i], "-w"))   /* embedding window id */
+ 			embed = argv[++i];
++		else if (!strcmp(argv[i], "-h")) { /* minimum height of one menu line */
++			lineheight = atoi(argv[++i]);
++			lineheight = MAX(lineheight, min_lineheight);
++		}
+         else if (!strcmp(argv[i], "-H"))   /* show/hide hint */
+             showhint = atoi(argv[++i]);
+         else if (!strcmp(argv[i], "-c"))   /* set space char */
