@@ -6,15 +6,36 @@ static int showhint = 1;                    /* 1 to show key hints, 0 doesn't di
 
 static char spacechar = '_';                /* replace SPC key with this char in the hint */
 /* -fn option overrides fonts[0]; default X11 font or font set */
+static char font[] = "monospace:size=10";
 static const char *fonts[] = {
-	"monospace:size=10"
+	font,
+    "monospace:size=10",
 };
-static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
-static const char *colors[SchemeLast][2] = {
+static char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
+
+static char normfgcolor[] = "#bbbbbb";
+static char normbgcolor[] = "#222222";
+static char selfgcolor[]  = "#eeeeee";
+static char selbgcolor[]  = "#005577";
+
+static char *colors[SchemeLast][2] = {
 	/*     fg         bg       */
-	[SchemeNorm] = { "#bbbbbb", "#222222" },
-	[SchemeSel] = { "#eeeeee", "#005577" },
-	[SchemeOut] = { "#000000", "#00ffff" },
+	[SchemeNorm] = { normfgcolor, normbgcolor },
+	[SchemeSel]  = { selfgcolor,  selbgcolor  },
+	[SchemeOut]  = { "#000000",   "#00ffff" },
+};
+
+/*
+ * Xresources preferences to load at startup
+ * use the dmenu class for configuring it (like dmenu)
+ */
+ResourcePref resources[] = {
+	{ "font",        STRING, &font },
+	{ "normfgcolor", STRING, &normfgcolor },
+	{ "normbgcolor", STRING, &normbgcolor },
+	{ "selfgcolor",  STRING, &selfgcolor },
+	{ "selbgcolor",  STRING, &selbgcolor },
+	{ "prompt",      STRING, &prompt },
 };
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
 static unsigned int lines      = 0;

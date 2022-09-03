@@ -2,7 +2,7 @@
 ====================
 ## my-dmenukey vs dmenukey
 *my-dmenukey* is just *dmenukey* but integrated with **gcolors**, it's already patched with
-*dmenukey-lineheight* and it has all the configuration for personal use.
+*dmenukey-lineheight* and *dmenukey-xresources* and it has all the configuration for personal use.
 
 *dmenukey* is just an standart version, *my-dmenukey* is my configuration
 
@@ -26,6 +26,16 @@ setting the option in `config.h` or `-H 0/1` to enable/disable this option.
 Allowed keys are these one that doesn't require another key to put them. For example, % symbol
 is not a valid key but SPC yes. Btw, you can set a character to replace SPC in the hint to
 this character to visualiza that is a space
+
+## Xresources
+To setup *my-dmenukey* to work with `~/.Xresources` file just use the class `dmenu`. This is to reuse your settings for `dmenu`. For example:
+```
+dmenu.font:           Ubuntu:size=13
+dmenu.normfgcolor:    #9497aa
+dmenu.normbgcolor:    #123456
+dmenu.selfgcolor:     #ffffff
+dmenu.selbgcolor:     #36bd87
+```
 
 ## Patches
 I include many patches in the `patches/` folder. There are not applied in the code, so if you
